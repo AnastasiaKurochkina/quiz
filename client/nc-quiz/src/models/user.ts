@@ -1,7 +1,7 @@
 export default interface User {
-    _id: string;
+    _id?: string;
     login: string;
     password: string;
     name: string;
-    fullName: string;
+    fullname: string;
 };
