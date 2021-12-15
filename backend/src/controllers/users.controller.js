@@ -48,13 +48,14 @@ export default class UsersController {
             const user = await UsersDAO.getUser(req);//получение пользователя по логину
     
             if(!user) {
-                return res.status(400).json({ message: 'Неверно введены данные' })
+                return res.status(400).json({ message: 'Неверный логин' })
             }
             
             const verifyPassword = await bcrypt.compare(req.body.password, user.password); //сравнение паролей
+            
     
             if(!verifyPassword) {
-                return res.status(400).json({ message: 'Неверно введены данные' })
+                return res.status(400).json({ message: 'Неверный пароль' })
             }
             //создание токена авторизации
             const token = jwt.sign(
