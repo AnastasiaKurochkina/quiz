@@ -1,5 +1,5 @@
 .signup {
-    height: 100vh;
+    height: 90vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -10,4 +10,9 @@
     min-width: 500px;
     display: flex;
     flex-direction: column;  
+}
+
+.signup-form__link {
+    text-decoration: none;
+    color: inherit;
 }
