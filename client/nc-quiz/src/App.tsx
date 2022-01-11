@@ -3,6 +3,7 @@ import SignUp from './components/SignUp/SignUp';
 import HeaderMenu from './components/HeaderMenu/HeaderMenu';
 import Auth from './components/Auth/Auth';
 import { Route, Routes } from 'react-router-dom';
+import AddQuiz from './components/AddQuiz/AddQuiz';
 
 function App() {
   //todo: добавлять роутинг при создании компонентов
@@ -10,6 +11,9 @@ function App() {
     <>
       <HeaderMenu />
       <Routes>
+        <Route path="quiz">
+          <Route path="create" element={<AddQuiz />} />
+        </Route>
         <Route path="user">
           <Route path="registration" element={<SignUp />} />
           <Route path="authorization" element={<Auth />} />

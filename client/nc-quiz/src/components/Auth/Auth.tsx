@@ -25,7 +25,10 @@ const Auth = () => {
         try {
             const data = await request('/user/authorization', 'POST', {...form})
             const token = data.token;
+            localStorage.setItem('userId', data.userId);
             const user: User = jwt(token);
+            localStorage.name = user.name;
+            localStorage.fullname = user.fullname;
             dispatch(login({
                 login: user.login,
                 userId: user.userId,

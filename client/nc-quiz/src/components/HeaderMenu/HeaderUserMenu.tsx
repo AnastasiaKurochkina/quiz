@@ -17,6 +17,9 @@ export default function HeaderUserMenu() {
         reg: '/user/registration'
     };
 
+    const name = localStorage.getItem('name');
+    const fullname = localStorage.getItem('fullname');
+
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -25,6 +28,12 @@ export default function HeaderUserMenu() {
     const handleClose = () => {
       setAnchorEl(null);
     };
+
+    const logoutUser = () => {
+        delete localStorage.userId;
+        delete localStorage.name;
+        delete localStorage.fullname;
+    }
 
     const location = useLocation();
     return (
@@ -83,7 +92,7 @@ export default function HeaderUserMenu() {
                             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                         >
                             <MenuItem>
-                                UserFullName
+                                {name} {fullname}
                             </MenuItem>
                             <Divider />
                             <MenuItem>
@@ -97,7 +106,7 @@ export default function HeaderUserMenu() {
                                 </Link>
                             </MenuItem>
                             <Divider />
-                            <MenuItem>
+                            <MenuItem onClick={logoutUser}>
                                 <Link className='header-menu__link' to="/user/authorization">
                                     Выйти
                                 </Link>
