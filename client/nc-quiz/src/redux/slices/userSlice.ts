@@ -1,13 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import User from "../../models/user";
 
-interface IUser {
-    id: string | undefined
-    name: string | undefined
-    login: string | undefined
-    fullname: string | undefined
-    password: string | undefined
-}
 export interface State {
     user: User
 }
@@ -34,8 +27,8 @@ const userSlice = createSlice({
             state.user.name = undefined;
             state.user.login = undefined;
             state.user.fullname = undefined;
-        }
-    }
+        },
+    },
 });
 export const {login,logout} = userSlice.actions;
 export default userSlice.reducer;
