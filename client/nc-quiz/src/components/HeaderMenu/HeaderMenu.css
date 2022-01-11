@@ -29,4 +29,5 @@
 .header-menu__link {
     text-decoration: none;
     color: inherit;
+    width: 100%;
 }
