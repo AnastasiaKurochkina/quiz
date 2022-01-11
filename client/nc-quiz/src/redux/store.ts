@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import userRedicer from "./slices/userSlice";
+import userReducer from "./slices/userSlice";
+import quizReducer from "./slices/quizSlice";
 
 export const store = configureStore({
     reducer: {
-        user: userRedicer
+        user: userReducer,
+        quiz: quizReducer
     }
 });
 export type AppDispatch = typeof store.dispatch;
