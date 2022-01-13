@@ -5,10 +5,10 @@ export const useHttp = () => {
     const request = useCallback(async(url, method = 'POST', body = null, headers = {}) => {
         setLoading(true)
         try {
-            if (body) {
+          if (body) {
                 body = JSON.stringify(body)
                 headers['Content-Type'] = 'application/json'
-            }
+            } 
             const response = await fetch(url, {
                 method,
                 body,
