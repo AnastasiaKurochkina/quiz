@@ -1,34 +1,43 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import User from "../../models/user";
 import './SignUp.css';
 import { useHttp } from "../../hooks/http-request";
 import Button from '@mui/material/Button';
-import { TextField, Typography } from "@mui/material";
-
+import { Alert, Snackbar, TextField, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const SignUp = () => {
 
-   const {loading, request} = useHttp()
-   const [form, setForm] = useState < User > ({
+   const { loading, request, error } = useHttp()
+   const [openSnackBar, setOpenSnackBar] = useState<boolean>(false);
+   const [form, setForm] = useState<User>({
       name: '',
       login: '',
       password: '',
       fullname: ''
    })
 
-   const changeHandler = (event: React.ChangeEvent < HTMLInputElement > ) => {
-      setForm({...form,
+
+   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setForm({
+         ...form,
          [event.target.name]: event.target.value
       })
    }
-   const registerHandler = async() => {
-      try {
-         const data = await request('/user/registration', 'POST', {...form})
-         console.log(data)
-      } catch (e) {}
+   const handleCloseSnackBar = () => {
+      setOpenSnackBar(false);
    }
-   
+
+   const registerHandler = async () => {
+      try {
+         const data = await request('/user/registration', 'POST', { ...form })
+         console.log(data)
+      } catch (e) {
+         setOpenSnackBar(true)
+      }
+   }
+
    return (
       <div className="signup">
          <Typography variant="h4">
@@ -37,7 +46,7 @@ const SignUp = () => {
          <form className="signup_form">
             <TextField
                margin="dense"
-               label="Name"
+               label="Имя"
                variant="outlined"
                type="text"
                name="name"
@@ -45,7 +54,7 @@ const SignUp = () => {
                onChange={changeHandler} />
             <TextField
                margin="dense"
-               label="Login"
+               label="Логин"
                variant="outlined"
                type="login"
                name="login"
@@ -53,7 +62,7 @@ const SignUp = () => {
                onChange={changeHandler} />
             <TextField
                margin="dense"
-               label="Password"
+               label="Пароль"
                variant="outlined"
                type="password"
                name="password"
@@ -61,7 +70,7 @@ const SignUp = () => {
                onChange={changeHandler} />
             <TextField
                margin="dense"
-               label="Full name"
+               label="Полное имя"
                variant="outlined"
                type="text"
                name="fullname"
@@ -71,8 +80,27 @@ const SignUp = () => {
                variant="contained"
                onClick={registerHandler}
                disabled={loading} >
-               Sign up
+               ЗАРЕГИСТРИРОВАТЬСЯ
             </Button>
+            <Typography>
+               Уже есть аккаунт?
+               <Button variant="text">
+                  <Link className='signup-form__link' to="/user/authorization">ВОЙТИ В ПРОФИЛЬ</Link>
+               </Button>
+               <Snackbar
+                  open={openSnackBar}
+                  autoHideDuration={6000}
+                  onClose={handleCloseSnackBar}
+               >
+                  <Alert
+                     onClose={handleCloseSnackBar}
+                     severity="error"
+                  >
+                     {error}
+                  </Alert>
+               </Snackbar>
+            </Typography>
+
          </form>
       </div>
    )

@@ -5,6 +5,7 @@ import Auth from './components/Auth/Auth';
 import { Route, Routes } from 'react-router-dom';
 import CurrentQuiz from './components/Quiz/Quiz';
 import Quiz from './components/Quiz/Quiz';
+import AddQuiz from './components/AddQuiz/AddQuiz';
 
 function App() {
   //todo: добавлять роутинг при создании компонентов
