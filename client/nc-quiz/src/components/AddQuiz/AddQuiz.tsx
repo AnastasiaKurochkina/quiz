@@ -54,7 +54,7 @@ export default function AddQuiz() {
                     variant="contained"
                     onClick={createQuiz}
                 >
-                    Создать Quiz
+                    Создать тест
                 </Button>
             </div>
         </div>

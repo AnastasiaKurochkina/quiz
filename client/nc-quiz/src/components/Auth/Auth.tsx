@@ -3,27 +3,33 @@ import { useState } from "react";
 import User from "../../models/user";
 import { useHttp } from "../../hooks/http-request";
 import Button from '@mui/material/Button';
-import { TextField, Typography } from "@mui/material";
+import { Alert, Snackbar, TextField, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/slices/userSlice";
 import jwt from 'jwt-decode';
 import { Link } from "react-router-dom";
+import './Auth.css';
 
 const Auth = () => {
     const dispatch = useDispatch()
-    const {loading,request} = useHttp()
-    const [form, setForm] = useState < User > ({
+    const { loading, request, error } = useHttp()
+    const [openSnackBar, setOpenSnackBar] = useState<boolean>(false);
+    const [form, setForm] = useState<User>({
         login: '',
         password: '',
     })
-    const changeHandler = (event: React.ChangeEvent < HTMLInputElement > ) => {
-        setForm({...form,
+    const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setForm({
+            ...form,
             [event.target.name]: event.target.value
         })
     }
-    const authHandler = async() => {
+    const handleCloseSnackBar = () => {
+        setOpenSnackBar(false);
+    }
+    const authHandler = async () => {
         try {
-            const data = await request('/user/authorization', 'POST', {...form})
+            const data = await request('/user/authorization', 'POST', { ...form })
             const token = data.token;
             localStorage.setItem('userId', data.userId);
             const user: User = jwt(token);
@@ -35,9 +41,11 @@ const Auth = () => {
                 name: user.name,
                 fullname: user.fullname
             }))
-        } catch (e) {}
+        } catch (e) {
+            setOpenSnackBar(true)
+        }
     }
-   
+
     return (
         <div className="signup">
             <Typography variant="h4">
@@ -46,7 +54,7 @@ const Auth = () => {
             <form className="signup_form">
                 <TextField
                     margin="dense"
-                    label="Login"
+                    label="Логин"
                     variant="outlined"
                     type="login"
                     name="login"
@@ -54,7 +62,7 @@ const Auth = () => {
                     onChange={changeHandler} />
                 <TextField
                     margin="dense"
-                    label="Password"
+                    label="Пароль"
                     variant="outlined"
                     type="password"
                     name="password"
@@ -64,17 +72,29 @@ const Auth = () => {
                     variant="contained"
                     onClick={authHandler}
                     disabled={loading} >
-                    Log in
+                    ВОЙТИ
                 </Button>
                 <Typography>
-                    Not a member? 
+                    Не зарегистрированы?
                     <Button variant="text">
-                        <Link className='signup-form__link' to="/user/registration">SIGN UP</Link>
+                        <Link className='auth-form__link' to="/user/registration">ПРОЙТИ РЕГИСТРАЦИЮ</Link>
                     </Button>
+                    <Snackbar
+                        open={openSnackBar}
+                        autoHideDuration={6000}
+                        onClose={handleCloseSnackBar}
+                    >
+                        <Alert
+                            onClose={handleCloseSnackBar}
+                            severity="error"
+                        >
+                            {error}
+                        </Alert>
+                    </Snackbar>
                 </Typography>
             </form>
         </div>
-        )
+    )
 }
 export default Auth;
 
