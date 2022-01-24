@@ -6,9 +6,9 @@ import Quiz from "../../models/quiz";
 import CurrentQuestion from "./Question";
 import { useParams } from "react-router-dom";
 import './Quiz.css';
+import Answer from "../../models/answer";
 
 const CurrentQuiz = () => {
-
    const { loading, request } = useHttp()
    const [quiz, setQuiz] = useState<Quiz>({
       title: '',
@@ -31,15 +31,34 @@ const CurrentQuiz = () => {
       getQuiz()
    }, [])
 
+   const [answers, setAnswers] = useState<Answer[]>([])
+
+
+   const handleAnswer = (answer: Answer) => {
+      setAnswers([...answers, answer])
+   }
+
+   const handleResult = async () => {
+      try {
+         console.log(answers)
+         const data = await request(`/quiz/${params.id}/result`, 'POST', { ...answers })
+         console.log(data)
+      } catch (e) {
+      }
+   }
+
    return (
       <div className="quiz">
          <FormControl>
             <div className="quiz-heading"> {quiz.title} </div>
             <h3> {quiz.description} </h3>
             {listquestions?.map(question =>
-               <CurrentQuestion question={question} />
+               <CurrentQuestion question={question} key={question._id} onSelectAnswer={handleAnswer} />
             )}
-            <Button variant="text">
+            <Button
+               variant="text"
+               onClick={handleResult}
+            >
                Отправить
             </Button>
          </FormControl>

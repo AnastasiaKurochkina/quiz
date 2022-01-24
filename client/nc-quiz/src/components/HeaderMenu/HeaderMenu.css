@@ -1,33 +1,4 @@
-.header-menu {
-    margin: 0px;
-    background-color: white;
-}
-
-.header-menu__btn {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    
-    padding: 13px;
-    margin: 0px 240px 0px 240px;
-
-    height: 30px;
-}
-
-.header-menu__btn-avatar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    padding: 6px;
-    padding-left: 13px;
-    margin: 0px 240px 0px 240px;
-
-    height: 44px;
-}
-
 .header-menu__link {
     text-decoration: none;
     color: inherit;
-    width: 100%;
 }

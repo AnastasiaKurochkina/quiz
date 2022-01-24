@@ -1,8 +1,17 @@
 import { FormControlLabel, Radio, RadioGroup, TextField } from "@mui/material";
 import React from "react";
+import Answer from "../../models/answer";
 import Question from "../../models/question";
 
-const CurrentQuestion: React.FC<{ question: Question }> = (props) => {
+const CurrentQuestion: React.FC<{ question: Question, onSelectAnswer: any }> = (props) => {
+
+    const handleAnswer = (event: any) => {
+        const currentAnswer: Answer = {
+            _id: props.question._id,
+            answer: event.currentTarget.value,
+        }
+        props.onSelectAnswer(currentAnswer)
+    }
     return (
         <div>
             <h3>{props.question.question}</h3>
@@ -16,6 +25,7 @@ const CurrentQuestion: React.FC<{ question: Question }> = (props) => {
                             value={item}
                             control={<Radio />}
                             label={item}
+                            onChange={handleAnswer}
                         />
                     )}
                 </RadioGroup>
@@ -25,6 +35,7 @@ const CurrentQuestion: React.FC<{ question: Question }> = (props) => {
                     id="outlined-basic"
                     label="Ваш ответ"
                     variant="outlined"
+                    onChange={handleAnswer}
                 />
             }
         </div>
