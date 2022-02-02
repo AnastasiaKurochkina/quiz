@@ -54,6 +54,21 @@ export default class QuizController {
             res.status(500).json({ message: '500 ошибка' })
         }
     }
+    static async getUsersQuiz(req, res) {
+        try {
+
+            const quiz = await QuizDAO.getUsersQuiz(req);
+
+            if(!quiz) {
+                return res.status(400).json({ message: 'UsersQuiz не был получен' })
+            }
+
+            res.status(201).json({ message: 'UsersQuiz получен', quiz });
+
+        } catch (err) {
+            res.status(500).json({ message: '500 ошибка' })
+        }
+    }
 
     static async getAllQuiz(req, res) {
         try {
@@ -65,7 +80,7 @@ export default class QuizController {
             }
 
             res.status(201).json({ message: 'AllQuiz получен', quiz });
-    
+
         } catch (err) {
             res.status(500).json({ message: '500 ошибка' })
         }

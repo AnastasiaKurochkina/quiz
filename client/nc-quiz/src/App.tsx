@@ -6,6 +6,7 @@ import { Route, Routes } from 'react-router-dom';
 import CurrentQuiz from './components/Quiz/Quiz';
 import Quiz from './components/Quiz/Quiz';
 import AddQuiz from './components/AddQuiz/AddQuiz';
+import ListQuiz from './components/ListQuiz/ListQuiz';
 
 function App() {
   //todo: добавлять роутинг при создании компонентов
@@ -13,6 +14,9 @@ function App() {
     <>
        <HeaderMenu />
       <Routes>
+        <Route path="myquiz" element={<ListQuiz />}>
+
+        </Route>
         <Route path="quiz">
           <Route path="create" element={<AddQuiz />} />
         </Route>
@@ -21,7 +25,7 @@ function App() {
           <Route path="authorization" element={<Auth />} />
         </Route>
         <Route path="quiz/:id" element={<CurrentQuiz />} />
-      </Routes> 
+      </Routes>
     </>
   );
 }
