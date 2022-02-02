@@ -5,6 +5,10 @@ export default class QuizDAO {
         return await Quiz.findById(req.params.id)
     }
 
+    static async getUsersQuiz(req) {
+        return await Quiz.find({userId: req.params.userId})
+    }
+
     static async getAllQuiz() {
         return await Quiz.find({})
     }
