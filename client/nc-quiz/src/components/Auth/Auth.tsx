@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import User from "../../models/user";
 import { useHttp } from "../../hooks/http-request";
@@ -7,23 +7,40 @@ import { Alert, Snackbar, TextField, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/slices/userSlice";
 import jwt from 'jwt-decode';
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import './Auth.css';
 
 const Auth = () => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const [userSearchParams, setUserSearchParams] = useSearchParams();
+    
     const { loading, request, error } = useHttp()
     const [openSnackBar, setOpenSnackBar] = useState<boolean>(false);
+    const [openNoticeReg, setOpenNoticeReg] = useState<boolean>(false);
     const [form, setForm] = useState<User>({
         login: '',
         password: '',
     })
+
     const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         setForm({
             ...form,
             [event.target.name]: event.target.value
         })
     }
+
+
+    useEffect(() => {
+        if(userSearchParams.get("successfullyRegistered")) {
+            setOpenNoticeReg(true);
+            setTimeout(() => {
+                setUserSearchParams("");
+            }, 6000);
+        } else {
+            setOpenNoticeReg(false);
+        }
+    });
+
     const handleCloseSnackBar = () => {
         setOpenSnackBar(false);
     }
@@ -48,6 +65,11 @@ const Auth = () => {
 
     return (
         <div className="signup">
+            <Snackbar open={openNoticeReg} autoHideDuration={4000}>
+                <Alert severity="success" sx={{ width: '100%'}}>
+                    Регистрация прошла успешно!
+                </Alert>
+            </Snackbar>
             <Typography variant="h4">
                 Авторизация
             </Typography>
@@ -98,4 +120,8 @@ const Auth = () => {
 }
 export default Auth;
 
+
+function componentDidMount() {
+    throw new Error("Function not implemented.");
+}
 

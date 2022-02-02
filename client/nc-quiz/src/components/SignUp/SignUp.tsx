@@ -1,13 +1,15 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useState } from "react";
 import User from "../../models/user";
 import './SignUp.css';
 import { useHttp } from "../../hooks/http-request";
 import Button from '@mui/material/Button';
 import { Alert, Snackbar, TextField, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
+
+   let navigate = useNavigate();
 
    const { loading, request, error } = useHttp()
    const [openSnackBar, setOpenSnackBar] = useState<boolean>(false);
@@ -32,7 +34,10 @@ const SignUp = () => {
    const registerHandler = async () => {
       try {
          const data = await request('/user/registration', 'POST', { ...form })
-         console.log(data)
+         if(data.message === 'Пользователь создан') {
+            localStorage.setItem('messageSuccessSignUp', data.message);
+         }
+         navigate('/user/authorization?successfullyRegistered=true');
       } catch (e) {
          setOpenSnackBar(true)
       }
