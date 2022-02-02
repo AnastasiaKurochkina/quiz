@@ -5,17 +5,25 @@ import Button from "@mui/material/Button";
 import { useState } from "react";
 import { useHttp } from "../../hooks/http-request";
 import './AddQuiz.css';
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 export default function AddQuiz() {
 
-    const {loading,request} = useHttp();
-    
+    const {loading, request, error} = useHttp();
+    const [errSnackBar, setErrSnackBar] = useState<boolean>(false);
+    const [successSnackBar, setSuccessSnackBar] = useState<boolean>(false);
     const [quiz, setQuiz] = useState('');
 
     const userId = localStorage.getItem('userId');
 
     const changeHandler = (newQuiz: any) => {
         setQuiz(newQuiz);
+    }
+
+    const handleCloseSnackBar = () => {
+        setErrSnackBar(false);
+        setSuccessSnackBar(false);
     }
 
     const createQuiz = async() => {
@@ -26,8 +34,9 @@ export default function AddQuiz() {
 
         try {
             const data = await request('/quiz/create', 'POST', parseQuiz);
-            alert(data.message);
+            setSuccessSnackBar(true);
         } catch (e) {
+            setErrSnackBar(true)
         }
     }
 
@@ -57,6 +66,32 @@ export default function AddQuiz() {
                     Создать тест
                 </Button>
             </div>
+            <Snackbar
+                open={errSnackBar}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackBar}
+            >
+                <Alert
+                    onClose={handleCloseSnackBar}
+                    severity="error"
+                >
+                    {(error === "500 ошибка") ? (
+                        "Неправильно заполнен редактор"
+                    ) : "Ошибка при создании теста"}
+                </Alert>
+            </Snackbar>
+            <Snackbar
+                open={successSnackBar}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackBar}
+            >
+                <Alert
+                    onClose={handleCloseSnackBar}
+                    severity="success"
+                >
+                    Тест успешно создан
+                </Alert>
+            </Snackbar>
         </div>
     );
 }
