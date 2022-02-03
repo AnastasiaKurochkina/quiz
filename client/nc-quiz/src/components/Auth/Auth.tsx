@@ -7,13 +7,13 @@ import { Alert, Snackbar, TextField, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/slices/userSlice";
 import jwt from 'jwt-decode';
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, Navigate, useSearchParams } from "react-router-dom";
 import './Auth.css';
 
 const Auth = () => {
     const dispatch = useDispatch();
     const [userSearchParams, setUserSearchParams] = useSearchParams();
-    
+
     const { loading, request, error } = useHttp()
     const [openSnackBar, setOpenSnackBar] = useState<boolean>(false);
     const [openNoticeReg, setOpenNoticeReg] = useState<boolean>(false);
@@ -21,17 +21,15 @@ const Auth = () => {
         login: '',
         password: '',
     })
-
+    const [authOk, setAuthOk] = useState<boolean>(false)
     const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         setForm({
             ...form,
             [event.target.name]: event.target.value
         })
     }
-
-
     useEffect(() => {
-        if(userSearchParams.get("successfullyRegistered")) {
+        if (userSearchParams.get("successfullyRegistered")) {
             setOpenNoticeReg(true);
             setTimeout(() => {
                 setUserSearchParams("");
@@ -58,15 +56,18 @@ const Auth = () => {
                 name: user.name,
                 fullname: user.fullname
             }))
+            setAuthOk(true)
         } catch (e) {
             setOpenSnackBar(true)
         }
     }
-
+    if (authOk) {
+        return <Navigate to='/user/myquiz' />
+    }
     return (
         <div className="signup">
             <Snackbar open={openNoticeReg} autoHideDuration={4000}>
-                <Alert severity="success" sx={{ width: '100%'}}>
+                <Alert severity="success" sx={{ width: '100%' }}>
                     Регистрация прошла успешно!
                 </Alert>
             </Snackbar>

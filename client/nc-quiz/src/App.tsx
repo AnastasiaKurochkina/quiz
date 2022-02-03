@@ -12,17 +12,15 @@ function App() {
   //todo: добавлять роутинг при создании компонентов
   return (
     <>
-       <HeaderMenu />
+      <HeaderMenu />
       <Routes>
-        <Route path="myquiz" element={<ListQuiz />}>
-
-        </Route>
         <Route path="quiz">
           <Route path="create" element={<AddQuiz />} />
         </Route>
         <Route path="user">
           <Route path="registration" element={<SignUp />} />
           <Route path="authorization" element={<Auth />} />
+          <Route path="myquiz" element={<ListQuiz />} />
         </Route>
         <Route path="quiz/:id" element={<CurrentQuiz />} />
       </Routes>
