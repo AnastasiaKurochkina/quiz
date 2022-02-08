@@ -7,7 +7,7 @@ const CurrentQuestion: React.FC<{ question: Question, onSelectAnswer: any }> = (
 
     const handleAnswer = (event: any) => {
         const currentAnswer: Answer = {
-            _id: props.question._id,
+            questionId: props.question._id,
             answer: event.currentTarget.value,
         }
         props.onSelectAnswer(currentAnswer)
@@ -35,7 +35,7 @@ const CurrentQuestion: React.FC<{ question: Question, onSelectAnswer: any }> = (
                     id="outlined-basic"
                     label="Ваш ответ"
                     variant="outlined"
-                    onChange={handleAnswer}
+                    onBlur={handleAnswer}
                 />
             }
         </div>

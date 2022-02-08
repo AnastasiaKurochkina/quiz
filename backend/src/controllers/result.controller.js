@@ -21,16 +21,23 @@ export default class ResultController {
     static async createResultsByQuizId(req, res) {
         try {
 
-            const quiz = await QuizDAO.getQuiz(req);
-            const answers = req.body.answers;
+            const quiz = await QuizDAO.getQuiz(req); //получаю квиз по id
+            const answers = req.body.answers; //записываю ответы на вопросы
 
-            const results = await ResultDAO.createResultsByQuizId(quiz.id, quiz.userId, answers);
+            for (let i in answers) {
+                let answer = answers[i].answer.trim().toLowerCase().split(" ");
+                let correctAnswer = quiz.questions[i].correctAnswer.trim().toLowerCase().split(" ");
+                
+                answers[i].answer = answer[i] === correctAnswer[i];
+            }
+
+            const results = await ResultDAO.createResultsByQuizId(req.body.quizId, req.body.userId, answers); //сохраняю в бд
 
             if(!results) {
                 return res.status(400).json({ message: 'Результаты не были записаны' })
             }
 
-            res.status(201).json({ message: 'Результаты были записаны', results });
+            res.status(201).json({ message: 'Результаты были записаны' });
     
         } catch (err) {
             res.status(500).json({ message: '500 ошибка' })
