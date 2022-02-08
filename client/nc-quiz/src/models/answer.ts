@@ -1,5 +1,5 @@
 export default interface Answer {
-    _id: string;
+    questionId: string;
     idQuiz?: string;
     answer: string;
 };
