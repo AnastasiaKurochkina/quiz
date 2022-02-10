@@ -2,6 +2,9 @@ import User from '../models/User.js';
 import bcrypt from 'bcryptjs';
 
 export default class UsersDAO {
+    static async getUserByUserId(req) {
+        return await User.findById(req)
+    }
 
     static async getUser(req) {
         return await User.findOne({ login: req.body.login })
