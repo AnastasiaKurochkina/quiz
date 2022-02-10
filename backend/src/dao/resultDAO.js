@@ -5,8 +5,8 @@ export default class ResultDAO {
         return await Result.find({ quizId: req.params.id })
     }
 
-    static async createResultsByQuizId(quizId, userId, answers) {
-        const result = new Result({ quizId, userId, answers });
+    static async createResultsByQuizId(quizId, userId, userName, userFullName, answers) {
+        const result = new Result({ quizId, userId, userName, userFullName, answers });
         return await result.save();
     }
 }
