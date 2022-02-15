@@ -1,4 +1,4 @@
-.quiz{
+.quiz {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -8,4 +8,32 @@
     font-size: 40px;
     text-align: center;
     font-weight: bold;
+}
+.Wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-bottom: 20px;
+}
+.Timer{
+    display: flex;
+    position: relative;
+    margin-left: 10px;
+    margin-bottom: 262px;
+}
+
+@media screen and (max-width: 1000px) {
+    .Wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        margin-bottom: 20px;
+    }
+    .Timer{
+        display: flex;
+        position: relative;
+        margin-top: 6px;
+        margin-left: 1px;
+        margin-bottom: 220px;
+    }
 }

@@ -1,5 +1,5 @@
 
-import { Box, Button, FormControl } from "@mui/material";
+import {Box, Button, CircularProgress, FormControl, Typography} from "@mui/material";
 import React, { useCallback, useEffect, useState } from "react";
 import { useHttp } from "../../hooks/http-request";
 import Quiz from "../../models/quiz";
@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom";
 import './Quiz.css';
 import Answer from "../../models/answer";
 import Result from "../../models/result";
+import Timer from "../Timer/Timer";
 
 const CurrentQuiz = () => {
    const { loading, request } = useHttp()
@@ -62,25 +63,28 @@ const CurrentQuiz = () => {
    }
 
    return (
-      <div className="quiz">
-         <FormControl>
-            <div className="quiz-heading"> {quiz.title} </div>
-            <h3> {quiz.description} </h3>
-            {listquestions?.map(question =>
-               <CurrentQuestion question={question} key={question._id}
-                  onSelectAnswer={handleAnswer}
-               />
-            )}
-            <Box textAlign='center'>
-               <Button
-                  variant="contained"
-                  sx={{ mt: 3, bgcolor: '#1a237e', width: '350px', }}
-                  onClick={handleResult}
-               >
-                  Отправить
-               </Button>
-            </Box>
-         </FormControl>
+       <div className="Wrapper">
+         <div className="quiz">
+            <FormControl>
+               <div className="quiz-heading"> {quiz.title} </div>
+               <h3> {quiz.description} </h3>
+               {listquestions?.map(question =>
+                  <CurrentQuestion question={question} key={question._id}
+                     onSelectAnswer={handleAnswer}
+                  />
+               )}
+               <Box textAlign='center'>
+                  <Button
+                     variant="contained"
+                     sx={{ mt: 3, bgcolor: '#1a237e', width: '350px', }}
+                     onClick={handleResult}
+                  >
+                     Отправить
+                  </Button>
+               </Box>
+            </FormControl>
+         </div>
+          <Timer time={13000} answers={result} />
       </div>
    )
 
