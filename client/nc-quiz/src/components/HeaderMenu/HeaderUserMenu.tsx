@@ -107,7 +107,7 @@ export default function HeaderUserMenu() {
                                     </Link>
                                 </MenuItem>
                                 <MenuItem>
-                                    <Link className='header-menu__link' to="/myquiz">
+                                    <Link className='header-menu__link' to="user/myquiz">
                                         Мои опросы
                                     </Link>
                                 </MenuItem>

@@ -62,7 +62,7 @@ const Auth = () => {
         }
     }
     if (authOk) {
-        return <Navigate to='/user/myquiz' />
+        return <Navigate to='/' />
     }
     return (
         <div className="signup">

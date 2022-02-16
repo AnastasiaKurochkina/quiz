@@ -4,7 +4,6 @@ import HeaderMenu from './components/HeaderMenu/HeaderMenu';
 import Auth from './components/Auth/Auth';
 import { Route, Routes } from 'react-router-dom';
 import CurrentQuiz from './components/Quiz/Quiz';
-import Quiz from './components/Quiz/Quiz';
 import AddQuiz from './components/AddQuiz/AddQuiz';
 import ListQuiz from './components/ListQuiz/ListQuiz';
 
@@ -14,6 +13,7 @@ function App() {
     <>
       <HeaderMenu />
       <Routes>
+        <Route path="" element={<ListQuiz />} />
         <Route path="quiz">
           <Route path="create" element={<AddQuiz />} />
         </Route>
