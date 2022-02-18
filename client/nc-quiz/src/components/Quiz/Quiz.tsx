@@ -8,20 +8,18 @@ import { useParams } from "react-router-dom";
 import './Quiz.css';
 import Answer from "../../models/answer";
 import Result from "../../models/result";
+import Auth from "../Auth/Auth";
 
 const CurrentQuiz = () => {
-   const { loading, request } = useHttp()
-   const [quiz, setQuiz] = useState<Quiz>({
-      title: '',
-      questions: [],
-      private: true
-   });
+   const { request } = useHttp()
+   const [quiz, setQuiz] = useState<Quiz>({})
 
    let params = useParams()
 
    const getQuiz = useCallback(async () => {
       try {
          const data = await request(`/quiz/${params.id}`, 'GET')
+         console.log(data.quiz)
          setQuiz(data.quiz)
       } catch (e) { }
    }, [request])
@@ -34,7 +32,7 @@ const CurrentQuiz = () => {
 
    const [result, setResult] = useState<Result>({
       quizId: `${params.id}`,
-      userId: `${localStorage.getItem('userId')}`,
+      userId: `${localStorage.getItem('userId')}`,  
       answers: []
    })
 
@@ -61,11 +59,17 @@ const CurrentQuiz = () => {
       }
    }
 
+   if (quiz.private == true && localStorage.getItem('userId') == null) {
+      return <Auth quiz={quiz._id} />
+   }
+
    return (
       <div className="quiz">
          <FormControl>
-            <div className="quiz-heading"> {quiz.title} </div>
-            <h3> {quiz.description} </h3>
+            <div className="quiz-heading">
+               <div className="quiz-heading-title"> {quiz.title} </div>
+               <h3 > {quiz.description} </h3>
+            </div>
             {listquestions?.map(question =>
                <CurrentQuestion question={question} key={question._id}
                   onSelectAnswer={handleAnswer}

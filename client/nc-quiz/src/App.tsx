@@ -15,14 +15,14 @@ function App() {
     <>
        <HeaderMenu />
       <Routes>
-      <Route path="myquiz" element={<ListQuiz />} />
-      <Route path="results/:id" element={<Results />} />
+        <Route path="myquiz" element={<ListQuiz />} />
+        <Route path="results/:id" element={<Results />} />
         <Route path="quiz">
           <Route path="create" element={<AddQuiz />} />
         </Route>
         <Route path="user">
           <Route path="registration" element={<SignUp />} />
-          <Route path="authorization" element={<Auth />} />
+          <Route path="authorization" element={<Auth quiz={undefined} />} />
         </Route>
         <Route path="quiz/:id" element={<CurrentQuiz />} />
       </Routes> 
