@@ -34,16 +34,18 @@ export default class ResultController {
                 answers[i].answer = answer[i] === correctAnswer[i];
             }
 
-            if(req.body.userId) {
+             if(req.body.userId == 'null') {
+                name = "Анонимный",
+                fullname = "Пользователь",
+                userId = null;
+                
+            } else {
                 const user = await UsersDAO.getUserByUserId(req.body.userId); //получение пользователя
                 name = user.name;
                 fullname = user.fullname;
                 userId = req.body.userId;
-            } else {
-                name = "Анонимный",
-                fullname = "Пользователь",
-                userId = null;
-            }
+            } 
+
 
             const results = await ResultDAO.createResultsByQuizId(req.body.quizId, userId, name, fullname, answers);
 

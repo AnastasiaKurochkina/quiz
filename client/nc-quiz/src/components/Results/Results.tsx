@@ -35,6 +35,7 @@ const Results = () => {
     useEffect(() => {
         resultHandler()
     }, [])
+    
 
     return (
         <div>
