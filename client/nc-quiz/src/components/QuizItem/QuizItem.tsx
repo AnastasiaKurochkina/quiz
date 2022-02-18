@@ -6,7 +6,7 @@ import * as React from "react";
 import {useHttp} from "../../hooks/http-request";
 import {useState} from "react";
 
-export default function QuizItem (props:any) {
+export default function QuizItem(props: any) {
 
     const {loading, request, error} = useHttp();
 
@@ -47,34 +47,13 @@ export default function QuizItem (props:any) {
                     </Typography>
 
                     <FormGroup>
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={checked.open}
-                                    onChange={()=> setChecked({
-                                        privateQuiz: checked.privateQuiz,
-                                            open: !checked.open
-                                        })
-                                    }
-                                />
-                            }
-                            label= {checked.open? 'Открыт':'Закрыт'}
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={checked.privateQuiz}
-                                    onChange={()=> setChecked({
-                                        privateQuiz: !checked.privateQuiz,
-                                            open: checked.open
-                                        })
-                                    }
-                                />
-                            }
-                            label= {checked.privateQuiz? 'Приватный':'Общий'}
-                        />
+                        <FormControlLabel control={<Checkbox />} label={props.details.open ? 'Открыт' : 'Закрыт'} />
+                        <FormControlLabel control={<Checkbox />} label={props.details.privateQuiz ? 'Приватный' : 'Общий'} />
                         <CardActions>
-                            <Button size="small" onClick={savePermission} >Сохранить</Button>
+                            <Button size="small">Сохранить</Button>
+                            <Button size="small"  >
+                                <Link className='quiz-cars__link' to={`/results/${props.details._id}`}> Результаты </Link>
+                            </Button>
                         </CardActions>
                     </FormGroup>
                 </CardContent>
