@@ -4,7 +4,6 @@ import { useHttp } from "../../hooks/http-request";
 import './ListQuiz.css';
 import QuizItem from "../QuizItem/QuizItem";
 import {Grid} from "@mui/material";
-import {useParams} from "react-router-dom";
 
 export default function ListQuiz () {
 
@@ -23,6 +22,7 @@ export default function ListQuiz () {
         questions:[]
     }]);
 
+
     const getList = useCallback(async () => {
         try{
             const data = await request(`/myquiz/${userId}`, 'GET')
@@ -32,7 +32,7 @@ export default function ListQuiz () {
 
     useEffect(() => {
         getList()
-    },[])
+    },[userId])
 
     return (
         <div className="listQuiz">
@@ -40,7 +40,7 @@ export default function ListQuiz () {
                 <Grid container columns={{xs: 1, md: 4 }}>
                     {list.map(key=>{
                         return(
-                            <Grid item xs={1} md={1}>
+                            <Grid key={key._id} item xs={1} md={1}>
                                 <QuizItem key={key._id} index={key._id} details={key}/>
                             </Grid>
                         );
