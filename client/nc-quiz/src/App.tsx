@@ -14,6 +14,7 @@ function App() {
     <>
       <HeaderMenu />
       <Routes>
+        <Route path="" element={<ListQuiz />} />
         <Route path="quiz">
           <Route path="create" element={<AddQuiz />} />
         </Route>
