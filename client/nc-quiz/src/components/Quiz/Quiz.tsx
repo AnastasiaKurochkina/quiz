@@ -1,21 +1,24 @@
 
-import {Box, Button, CircularProgress, FormControl, Typography} from "@mui/material";
+import {Box, Button, FormControl} from "@mui/material";
 import React, { useCallback, useEffect, useState } from "react";
 import { useHttp } from "../../hooks/http-request";
 import Quiz from "../../models/quiz";
 import CurrentQuestion from "./Question";
-import { useParams } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import './Quiz.css';
 import Answer from "../../models/answer";
 import Result from "../../models/result";
 import Timer from "../Timer/Timer";
+import QuizItem from "../QuizItem/QuizItem";
 
 const CurrentQuiz = () => {
+   let navigate = useNavigate();
    const { loading, request } = useHttp()
    const [quiz, setQuiz] = useState<Quiz>({
       title: '',
       questions: [],
-      private: true
+      private: true,
+      timer: 0
    });
 
    let params = useParams()
@@ -53,11 +56,16 @@ const CurrentQuiz = () => {
       )
    }
 
+   const setTime = () => {
+      return Number(quiz.timer)
+   }
+
    const handleResult = async () => {
       try {
          console.log(result)
          const data = await request(`/quiz/${params.id}/result`, 'POST', { ...result })
          console.log(data)
+         navigate('/myquiz');
       } catch (e) {
       }
    }
@@ -84,7 +92,7 @@ const CurrentQuiz = () => {
                </Box>
             </FormControl>
          </div>
-          <Timer time={quiz.timer===undefined? 0:quiz.timer} answers={result} />
+          { setTime()>0? <Timer time={setTime()} answers={result}/>:<p>{quiz.timer}</p> }
       </div>
    )
 

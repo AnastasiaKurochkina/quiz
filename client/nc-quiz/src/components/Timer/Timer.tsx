@@ -52,6 +52,7 @@ export default function Timer(props: { time: number; answers: Result}) {
         localStorage.setItem('minutes', time.minutes.toString());
         localStorage.setItem('seconds', time.seconds.toString());
         localStorage.setItem('currentProgress', progress.toString());
+
         return timeLeft;
     }
 
@@ -100,13 +101,13 @@ export default function Timer(props: { time: number; answers: Result}) {
                 currentTime.seconds === 0
             ) {
                 clearInterval(timer);
-                sendAnswers();
 
                 localStorage.removeItem("currentProgress");
                 localStorage.removeItem("hours");
                 localStorage.removeItem("minutes");
                 localStorage.removeItem("seconds");
                 localStorage.removeItem("end");
+                sendAnswers();
             }
             setTime(currentTime);
         }, 1000);
@@ -114,7 +115,7 @@ export default function Timer(props: { time: number; answers: Result}) {
         return () => {
             clearInterval(timer);
         };
-    }, []);
+    }, [time.seconds]);
 
 return(
     <div className='Timer'>
