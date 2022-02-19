@@ -1,13 +1,14 @@
-import React, {useCallback, useEffect} from "react";
+import React, { useCallback, useEffect } from "react";
 import { useState } from "react";
 import { useHttp } from "../../hooks/http-request";
 import './ListQuiz.css';
 import QuizItem from "../QuizItem/QuizItem";
-import {Grid} from "@mui/material";
+import { Button, Dialog, DialogActions, DialogTitle, Grid } from "@mui/material";
+import { Link } from "react-router-dom";
 
-export default function ListQuiz () {
+export default function ListQuiz() {
 
-    const {loading, request} = useHttp()
+    const { loading, request } = useHttp()
 
     const userId = localStorage.getItem('userId');
 
@@ -19,35 +20,63 @@ export default function ListQuiz () {
         open: true,
         userID: '',
         timer: 0,
-        questions:[]
+        questions: []
     }]);
+    const [openDialog, setOpenDialog] = useState<boolean>(true);
 
+    const handleCloseDialog = () => {
+        setOpenDialog(false);
+    };
 
     const getList = useCallback(async () => {
-        try{
+        try {
             const data = await request(`/myquiz/${userId}`, 'GET')
             setList(data.quiz)
         } catch (e) { }
-    },[request])
+    }, [request])
 
     useEffect(() => {
         getList()
-    },[userId])
+    }, [userId])
+    console.log(list)
+    console.log(!list)
 
     return (
-        <div className="listQuiz">
-            <div className="quiz">
-                <Grid container columns={{xs: 1, md: 4 }}>
-                    {list.map(key=>{
-                        return(
-                            <Grid key={key._id} item xs={1} md={1}>
-                                <QuizItem key={key._id} index={key._id} details={key}/>
-                            </Grid>
-                        );
-                    })}
-                </Grid>
-            </div>
-        </div>
+        <>
+            {list &&
+                <div className="listQuiz">
+                    <div className="quiz">
+                        <Grid container columns={{ xs: 1, md: 4 }}>
+                            {list.map(key => {
+                                return (
+                                    <Grid key={key._id} item xs={1} md={1}>
+                                        <QuizItem key={key._id} index={key._id} details={key} />
+                                    </Grid>
+                                );
+                            })}
+                        </Grid>
+                    </div>
+                </div>
+            }
+            {!list.length && 
+                <Dialog
+                    open={openDialog}
+                    onClose={handleCloseDialog}
+                >
+                    <DialogTitle>{"Созданных опросов еще нет!"}</DialogTitle>
+                    <DialogActions>
+                        <Button>
+                            <Link className="listQuiz-dialog__link" to="/quiz/create"> Создать опрос </Link>
+                        </Button>
+                        <Button onClick={handleCloseDialog}>
+                            ОК
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            }
+
+        </>
+
     );
 }
 
