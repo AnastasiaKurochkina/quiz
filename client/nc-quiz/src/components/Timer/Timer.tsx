@@ -3,6 +3,7 @@ import {CircularProgress, Typography} from "@mui/material";
 import {useEffect, useState} from "react";
 import Result from "../../models/result";
 import {useHttp} from "../../hooks/http-request";
+import {useNavigate} from "react-router-dom";
 
 interface time {
     seconds : number,
@@ -11,6 +12,8 @@ interface time {
 }
 
 export default function Timer(props: { time: number; answers: Result}) {
+    let navigate = useNavigate();
+
     const { loading, request } = useHttp()
     const [end, setEnd] = useState(Date.now() + props.time + 2000);
     const [progress, setProgress] = useState(100);
@@ -76,30 +79,42 @@ export default function Timer(props: { time: number; answers: Result}) {
 
 
     const sendAnswers = async () => {
-        console.log('send')
-        // try {
-        //     const data = await request(`/quiz/${props.answers.quizId}/result`, 'POST', {...props.answers})
-        //     console.log(data)
-        // } catch (e) {
-        // }
+        try {
+            const data = await request(`/quiz/${props.answers.quizId}/result`, 'POST', {...props.answers})
+            console.log(data)
+            if(data.message === 'Результаты были записаны') {
+                localStorage.setItem('messageSendResult', data.message);
+            }
+            navigate('/myquiz');
+        } catch (e) {
+        }
     }
 
     useEffect(() => {
+        const timer = setInterval(() => {
+            const currentTime = getTime();
 
-        const timer = setTimeout(() => setTime(getTime()), 1000);
+            if (
+                currentTime.hours === 0 &&
+                currentTime.minutes === 0 &&
+                currentTime.seconds === 0
+            ) {
+                clearInterval(timer);
+                sendAnswers();
 
-        if( time.hours === 0 && time.minutes === 0 && time.seconds === 0 ){
-            clearInterval(timer)
-            sendAnswers()
+                localStorage.removeItem("currentProgress");
+                localStorage.removeItem("hours");
+                localStorage.removeItem("minutes");
+                localStorage.removeItem("seconds");
+                localStorage.removeItem("end");
+            }
+            setTime(currentTime);
+        }, 1000);
 
-            localStorage.removeItem('currentProgress')
-            localStorage.removeItem('hours');
-            localStorage.removeItem('minutes');
-            localStorage.removeItem('seconds');
-            localStorage.removeItem('end');
-        }
-        return () => {clearInterval(timer)};
-    },)
+        return () => {
+            clearInterval(timer);
+        };
+    }, []);
 
 return(
     <div className='Timer'>

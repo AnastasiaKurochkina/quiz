@@ -84,7 +84,7 @@ const CurrentQuiz = () => {
                </Box>
             </FormControl>
          </div>
-          <Timer time={13000} answers={result} />
+          <Timer time={quiz.timer===undefined? 0:quiz.timer} answers={result} />
       </div>
    )
 
