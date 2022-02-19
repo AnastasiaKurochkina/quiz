@@ -17,6 +17,7 @@
   },
   "homepage": "https://gitlab.com/nc-samara-frontend-school/2021/development/fs_project_3#readme",
   "dependencies": {
+    "@mui/icons-material": "^5.4.2",
     "@reduxjs/toolkit": "^1.7.1"
   }
 }

@@ -1,15 +1,18 @@
-import {Checkbox, FormControlLabel, FormGroup} from "@mui/material";
+import {Alert, Checkbox, FormControlLabel, FormGroup, Snackbar} from "@mui/material";
 import {Button, Card, CardActions, CardContent, Typography} from "@mui/material";
 import './QuizItem.css';
 import {Link} from "react-router-dom";
 import * as React from "react";
 import {useHttp} from "../../hooks/http-request";
 import {useState} from "react";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function QuizItem(props: any) {
 
     const {loading, request, error} = useHttp();
 
+    const [deleted, setDeleted] = useState<boolean>(false);
     const [checked, setChecked] = useState({
             privateQuiz: props.details.privateQuiz,
             open: props.details.open
@@ -34,10 +37,24 @@ export default function QuizItem(props: any) {
         } catch (e) {
         }
     }
+    const deleteQuiz = async ()=>{
+        console.log('delete')
+        try {
+            const data = await request(`/myquiz/delete/${props.details._id}`, 'DELETE');
+
+            if(data.message == 'Quiz удален') {
+                setDeleted(true)
+                setTimeout(() => {
+                    setDeleted(false);
+                }, 6000);
+            }
+        } catch (e) {
+        }
+    }
 
     return (
         <div className="QuizItem">
-            <Card sx={{ minWidth: 275 }}>
+            <Card sx={{ minWidth: 275}}>
                 <CardContent>
                     <Typography variant="h5" component="div">
                         {props.details.title}
@@ -58,10 +75,19 @@ export default function QuizItem(props: any) {
                     </FormGroup>
                 </CardContent>
 
-                <CardActions>
+                <CardActions sx={{display: "flex", justifyContent: "space-between"}}>
                     <Button component={Link} to={`edit/${props.details._id}`} variant="contained" href="myquiz/edit" size="medium">Редактировать</Button>
+                    <IconButton aria-label="delete" size="large" >
+                        <DeleteIcon onClick={deleteQuiz}/>
+                    </IconButton>
                 </CardActions>
             </Card>
+
+            <Snackbar open={deleted} autoHideDuration={4000}>
+                <Alert severity="success" sx={{ width: '100%' }}>
+                    Quiz удален
+                </Alert>
+            </Snackbar>
         </div>
     );
 }
