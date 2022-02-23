@@ -38,18 +38,16 @@ export default function ListQuiz() {
     useEffect(() => {
         getList()
     }, [userId])
-    console.log(list)
-    console.log(!list)
 
     return (
         <>
             {list &&
                 <div className="listQuiz">
                     <div className="quiz">
-                        <Grid container columns={{ xs: 1, md: 4 }}>
+                        <Grid container columnSpacing={{ xs: 4, md: 12 }} columns={{ xs: 4, sm: 8, md: 4 }}>
                             {list.map(key => {
                                 return (
-                                    <Grid key={key._id} item xs={1} md={1}>
+                                    <Grid key={key._id} item xs={4} sm={3} md={1}>
                                         <QuizItem key={key._id} index={key._id} details={key} />
                                     </Grid>
                                 );
