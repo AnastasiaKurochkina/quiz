@@ -55,21 +55,16 @@ const CurrentQuiz = () => {
       try {
          const data = await request(`/quiz/${params.id}/result`, 'POST', { ...result })
          setDataMsg(data.message);
-      } catch (e) {
-      }
+      } catch (e) { }
    }
 
-   if (quiz.private == true && localStorage.getItem('userId') == null) {
-      return <Auth quiz={quiz._id} />
-   }
-   
-    if(loading) {
+   if (loading) {
       return <CircularProgress />
-   } 
+   }
 
    return (
       <div className="quiz">
-         <FormControl sx={{maxWidth: '1000px'}}>
+         <FormControl sx={{ maxWidth: '1000px' }}>
             <div className="quiz-heading">
                <div className="quiz-heading-title"> {quiz.title} </div>
                <h3 > {quiz.description} </h3>

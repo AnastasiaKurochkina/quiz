@@ -14,7 +14,7 @@ function App() {
   //todo: добавлять роутинг при создании компонентов
   return (
     <>
-       <HeaderMenu />
+      <HeaderMenu />
       <Routes>
         <Route path="myquiz" element={<ListQuiz />} />
         <Route path="myquiz/edit/:id" element={<EditQuiz />} />
@@ -24,10 +24,10 @@ function App() {
         </Route>
         <Route path="user">
           <Route path="registration" element={<SignUp />} />
-          <Route path="authorization" element={<Auth quiz={undefined} />} />
+          <Route path="authorization" element={<Auth />} />
         </Route>
         <Route path="quiz/:id" element={<CurrentQuiz />} />
-      </Routes> 
+      </Routes>
     </>
   );
 }

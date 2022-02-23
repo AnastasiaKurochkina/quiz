@@ -10,7 +10,7 @@ import jwt from 'jwt-decode';
 import { Link, Navigate, useSearchParams } from "react-router-dom";
 import './Auth.css';
 
-const Auth = (props: { quiz: any; }) => {
+const Auth = () => {
     const dispatch = useDispatch();
     const [userSearchParams, setUserSearchParams] = useSearchParams();
 
@@ -61,9 +61,7 @@ const Auth = (props: { quiz: any; }) => {
             setOpenSnackBar(true)
         }
     }
-    if (props.quiz && authOk) {
-        return <Navigate to={`/quiz/${props.quiz}`} />
-    }
+
     if (authOk) {
         return <Navigate to='/myquiz' />
     }
