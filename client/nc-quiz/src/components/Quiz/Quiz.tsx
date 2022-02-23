@@ -1,5 +1,5 @@
 
-import {Box, Button, CircularProgress, FormControl, Typography} from "@mui/material";
+import { Box, Button, CircularProgress, FormControl } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useHttp } from "../../hooks/http-request";
 import Quiz from "../../models/quiz";
@@ -13,7 +13,7 @@ import Timer from "../Timer/Timer";
 const CurrentQuiz = () => {
    let navigate = useNavigate();
    const { request, loading } = useHttp()
-   const [quiz, setQuiz] = useState<Quiz>({});
+   const [quiz, setQuiz] = useState<Quiz>({})
    const [dataMsg, setDataMsg] = useState()
 
    let params = useParams()
@@ -68,6 +68,10 @@ const CurrentQuiz = () => {
    if(loading) {
       return <CircularProgress />
    }
+   
+    if(loading) {
+      return <CircularProgress />
+   } 
 
    return (
        <div className="Wrapper">
