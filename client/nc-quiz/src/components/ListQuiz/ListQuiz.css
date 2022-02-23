@@ -1,7 +1,9 @@
 .listQuiz{
     display: flex;
     justify-content: center;
-    margin-top: 40px;
+    align-items: center;
+
+    margin: 40px;
 }
 .listQuiz-dialog__link {
     text-decoration: none;

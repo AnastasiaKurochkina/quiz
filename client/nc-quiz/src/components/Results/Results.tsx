@@ -1,31 +1,41 @@
-import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { TableChart } from "@material-ui/icons";
+import { Box, Button, CircularProgress, Dialog, DialogActions, DialogTitle, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import React, { useCallback, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useHttp } from "../../hooks/http-request";
 import Answer from "../../models/answer";
 const Results = () => {
-    const { request } = useHttp()
+    const { request, loading } = useHttp()
     let params = useParams()
-    const [result, setResult] = useState({})
     let count = 0;
-    const resultHandler = useCallback(async () => {
+    const [result, setResult] = useState({})
+    const [openDialog, setOpenDialog] = useState<boolean>(true);
+
+    const handleCloseDialog = () => {
+        setOpenDialog(false);
+    };
+
+    const resultHandler = async () => {
         try {
             const data = await request(`/myquiz/${params.id}/result`, 'GET')
             const result = data.results
-            result.forEach(((result: { answers: Answer[]; userFullName: any; }) => {
-                const correctAnswers = countCorrectAnswers(result.answers)
+            console.log(result)
+            result.forEach(((result: any) => {
+                const count= String(countCorrectAnswers(result.answers))
+                const userName = result.userName + " " + result.userFullName 
+                const correctAnswers = count.concat('/',result.answers.length)
                 setResult((prevState: any) => ({
                     ...prevState,
-                    [result.userFullName]: correctAnswers
+                    [userName]: correctAnswers
                 }))
             }))
         } catch (e) { }
-    }, [request])
+    }
 
     const countCorrectAnswers = (result: Answer[]) => {
         count = 0;
         result.map((item: Answer) => {
-            if (item.answer == 'true') {
+            if (item.answer === true) {
                 count = count + 1
             }
         })
@@ -34,45 +44,69 @@ const Results = () => {
 
     useEffect(() => {
         resultHandler()
-    }, [])
-    
+    }, [params.id])
+
+    if (loading) {
+        return <CircularProgress />
+    }
+
+    const resultArray = Object.entries(result)
 
     return (
         <div>
-            <h2 style={{ textAlign: 'center' }}>Таблица результатов</h2>
-            <Box
-                display="flex"
-                justifyContent="center">
-                <TableContainer
-                    component={Paper}
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        width: '600px'
-                    }}
+            {resultArray.length > 0 &&
+                <>
+                    <h2 style={{ textAlign: 'center' }}>Таблица результатов</h2>
+                    <Box
+                        display="flex"
+                        justifyContent="center">
+                        <TableContainer
+                            component={Paper}
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                width: '600px'
+                            }}
+                        >
+                            <Table>
+                                <TableHead sx={{ background: '#1565c0' }}>
+                                    <TableRow>
+                                        <TableCell sx={{ color: '#fafafa' }}> Имя пользователя </TableCell>
+                                        <TableCell sx={{ color: '#fafafa', alignItems: 'left' }}> Количество правильных ответов </TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+
+                                    {Object.entries(result).map((item: any) => (
+                                        <TableRow key={item[0]}>
+                                            <TableCell>
+                                                {item[0]}
+                                            </TableCell>
+                                            <TableCell>
+                                                {item[1]}
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Box>
+                </>
+            }
+            {!resultArray.length &&
+                <Dialog
+                    open={openDialog}
+                    onClose={handleCloseDialog}
                 >
-                    <Table>
-                        <TableHead sx={{ background: '#1565c0' }}>
-                            <TableRow>
-                                <TableCell sx={{ color: '#fafafa' }}> Имя пользователя </TableCell>
-                                <TableCell sx={{ color: '#fafafa', alignItems: 'left' }}> Количество правильных ответов </TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {Object.entries(result).map((item: any) => (
-                                <TableRow>
-                                    <TableCell>
-                                        {item[0]}
-                                    </TableCell>
-                                    <TableCell>
-                                        {item[1]}
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Box>
+                    <DialogTitle>{"На данный квиз еще нет результатов!"}</DialogTitle>
+                    <DialogActions>
+                        <Button>
+                            <Link className="listQuiz-dialog__link" to="/myquiz"> ОК </Link>
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            }
+
         </div>
     )
 }
