@@ -12,7 +12,7 @@ const QuizSchema = new Schema({
         questionId: mongoose.Schema.Types.ObjectId,
         question: {type: String, required: true},
         type: {type: String, required: true},
-        proposedAnswer: [String],
+        proposedAnswers: [String],
         correctAnswer: {type: String, required: true}
     }],
     timer: {type: Number, required: true}
