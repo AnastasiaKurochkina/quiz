@@ -47,7 +47,11 @@ const Results = () => {
     }, [params.id])
 
     if (loading) {
-        return <CircularProgress />
+        return(
+            <Box display="flex" justifyContent="center">
+                <CircularProgress sx={{display: "flex"}} />
+            </Box>
+        );
     }
 
     const resultArray = Object.entries(result)

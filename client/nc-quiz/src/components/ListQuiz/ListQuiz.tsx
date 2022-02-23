@@ -39,11 +39,6 @@ export default function ListQuiz() {
         getList()
     }, [userId])
 
-
-    if(loading) {
-        return <CircularProgress />
-    }
-
     return (
         <>
             {list &&
@@ -69,21 +64,27 @@ export default function ListQuiz() {
                     </div>
                 </div>
             }
-            {!list.length && 
-                <Dialog
-                    open={openDialog}
-                    onClose={handleCloseDialog}
-                >
-                    <DialogTitle>{"Созданных опросов еще нет!"}</DialogTitle>
-                    <DialogActions>
-                        <Button>
-                            <Link className="listQuiz-dialog__link" to="/quiz/create"> Создать опрос </Link>
-                        </Button>
-                        <Button onClick={handleCloseDialog}>
-                            ОК
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+            {!list.length &&
+                <div className="listQuiz">
+                    <Typography variant="h5" component="div" color="text.secondary">
+                        Здесь будут ваши квизы
+                    </Typography>
+
+                    <Dialog
+                        open={openDialog}
+                        onClose={handleCloseDialog}
+                    >
+                        <DialogTitle>{"Созданных опросов еще нет!"}</DialogTitle>
+                        <DialogActions>
+                            <Button>
+                                <Link className="listQuiz-dialog__link" to="/quiz/create"> Создать опрос </Link>
+                            </Button>
+                            <Button onClick={handleCloseDialog}>
+                                ОК
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                </div>
             }
 
         </>

@@ -67,8 +67,8 @@ export default function QuizItem(props: any) {
         <div className="QuizItem">
             <Card sx={{minWidth: 275}}>
                 <CardContent sx={{display: "flex", flexDirection:"column", justifyContent:"space-between"}}>
-                    <IconButton sx={{display: "flex", alignSelf:"flex-end"}} aria-label="delete" size="small" >
-                        <CloseIcon sx={{display: "flex", alignSelf:"flex-end"}} onClick={deleteQuiz}/>
+                    <IconButton sx={{display: "flex", alignSelf:"flex-end"}} aria-label="delete" size="small" onClick={deleteQuiz}>
+                        <CloseIcon sx={{display: "flex", alignSelf:"flex-end"}} />
                     </IconButton>
                     <Typography variant="h5" component="div">
                         {props.details.title}
