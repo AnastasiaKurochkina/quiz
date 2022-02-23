@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useHttp } from "../../hooks/http-request";
 import './ListQuiz.css';
 import QuizItem from "../QuizItem/QuizItem";
-import { Button, CircularProgress, Dialog, DialogActions, DialogTitle, Grid } from "@mui/material";
+import {Button, CircularProgress, Dialog, DialogActions, DialogTitle, Grid, Typography} from "@mui/material";
 import { Link } from "react-router-dom";
 
 export default function ListQuiz() {
@@ -51,11 +51,19 @@ export default function ListQuiz() {
                     <div className="quiz">
                         <Grid container columnSpacing={{ xs: 4, md: 12 }} columns={{ xs: 4, sm: 8, md: 4 }}>
                             {list.map(key => {
-                                return (
-                                    <Grid key={key._id} item xs={4} sm={3} md={1}>
-                                        <QuizItem key={key._id} index={key._id} details={key} />
-                                    </Grid>
-                                );
+                                if(key._id !== '') {
+                                    return (
+                                        <Grid key={key._id} item xs={4} sm={3} md={1}>
+                                            <QuizItem key={key._id} index={key._id} details={key}/>
+                                        </Grid>
+                                    );
+                                }else{
+                                    return (
+                                    <Typography variant="h5" component="div" color="text.secondary">
+                                        Здесь будут ваши квизы
+                                    </Typography>
+                                    );
+                                }
                             })}
                         </Grid>
                     </div>

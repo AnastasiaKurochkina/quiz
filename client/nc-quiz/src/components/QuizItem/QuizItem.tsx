@@ -63,10 +63,6 @@ export default function QuizItem(props: any) {
         }
     }
 
-    if(loading) {
-        return <CircularProgress />
-    }
-
     return (
         <div className="QuizItem">
             <Card sx={{minWidth: 275}}>
