@@ -119,26 +119,26 @@ export default function Timer(props: { time: number; answers: Result}) {
 
 return(
     <div className='Timer'>
-    <Box sx={{ position: 'fixed', display: 'inline-flex'}}>
-        <CircularProgress variant="determinate" size={110} value={progress} {...props} />
-        <Box
-            sx={{
-                top: 0,
-                left: 0,
-                bottom: 0,
-                right: 0,
-                position: 'absolute',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-            }}
-        >
-            <Typography variant="body2"
-                        component="div"
-                        color="text.secondary">{`${time.hours}h:${time.minutes}m:${time.seconds}s`}
-            </Typography>
+        <Box sx={{ position: 'fixed', display: 'inline-flex'}}>
+            <CircularProgress variant="determinate" size={110} value={progress} {...props} />
+            <Box
+                sx={{
+                    top: 0,
+                    left: 0,
+                    bottom: 0,
+                    right: 0,
+                    position: 'absolute',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
+            >
+                <Typography variant="body2"
+                            component="div"
+                            color="text.secondary">{`${time.hours}h:${time.minutes}m:${time.seconds}s`}
+                </Typography>
+            </Box>
         </Box>
-    </Box>
     </div>
 );
 }

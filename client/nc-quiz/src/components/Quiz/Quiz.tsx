@@ -92,8 +92,8 @@ const CurrentQuiz = () => {
                   </Button>
                </Box>
             </FormControl>
-            { setTime()>0? <Timer time={setTime()} answers={result}/>:<p>Не ограничное время</p> }
          </div>
+          { setTime()>0? <Timer time={setTime()} answers={result}/>:<p>Не ограничное время</p> }
       </div>
    )
 
