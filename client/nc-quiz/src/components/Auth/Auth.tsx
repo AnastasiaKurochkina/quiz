@@ -69,7 +69,7 @@ const Auth = (props: { quiz: any; }) => {
     }
 
     return (
-        <div className="signup">
+        <div className="auth">
             <Snackbar open={openNoticeReg} autoHideDuration={4000}>
                 <Alert severity="success" sx={{ width: '100%' }}>
                     Регистрация прошла успешно!
@@ -78,7 +78,7 @@ const Auth = (props: { quiz: any; }) => {
             <Typography variant="h4">
                 Авторизация
             </Typography>
-            <form className="signup_form">
+            <form className="auth_form">
                 <TextField
                     margin="dense"
                     label="Логин"

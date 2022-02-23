@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useHttp } from "../../hooks/http-request";
 import './ListQuiz.css';
 import QuizItem from "../QuizItem/QuizItem";
-import { Button, Dialog, DialogActions, DialogTitle, Grid } from "@mui/material";
+import { Button, CircularProgress, Dialog, DialogActions, DialogTitle, Grid } from "@mui/material";
 import { Link } from "react-router-dom";
 
 export default function ListQuiz() {
@@ -38,6 +38,11 @@ export default function ListQuiz() {
     useEffect(() => {
         getList()
     }, [userId])
+
+
+    if(loading) {
+        return <CircularProgress />
+    }
 
     return (
         <>
