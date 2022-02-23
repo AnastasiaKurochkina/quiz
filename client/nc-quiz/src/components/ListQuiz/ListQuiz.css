@@ -1,8 +1,11 @@
 .listQuiz{
     display: flex;
     justify-content: center;
-    margin-top: 40px;
-}
-.quiz{
+    align-items: center;
 
+    margin: 40px;
+}
+.listQuiz-dialog__link {
+    text-decoration: none;
+    color: inherit;
 }

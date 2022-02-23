@@ -15,7 +15,7 @@ export default function HeaderAuthMenu() {
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar
-                position="fixed"
+                position="static"
                 className="header-menu"
                 sx={{ background: '#f5f5f5' }}
             >

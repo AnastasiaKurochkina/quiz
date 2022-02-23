@@ -54,6 +54,7 @@ export default class QuizController {
             res.status(500).json({ message: '500 ошибка' })
         }
     }
+    
     static async getUsersQuiz(req, res) {
         try {
 

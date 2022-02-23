@@ -9,7 +9,7 @@ const ResultSchema = new Schema({
     userFullName: {type: String, required: true},
     answers: [{
         questionId: {type: Types.ObjectId, ref: "Quiz.questions.questionId"},
-        answer: {type: Boolean, required: true}
+        answer: {type: String, required: true}
     }]
 })
 

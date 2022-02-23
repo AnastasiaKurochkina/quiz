@@ -1,6 +1,6 @@
 
-import {Box, Button, FormControl} from "@mui/material";
-import React, { useCallback, useEffect, useState } from "react";
+import {Box, Button, CircularProgress, FormControl, Typography} from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { useHttp } from "../../hooks/http-request";
 import Quiz from "../../models/quiz";
 import CurrentQuestion from "./Question";
@@ -9,32 +9,28 @@ import './Quiz.css';
 import Answer from "../../models/answer";
 import Result from "../../models/result";
 import Timer from "../Timer/Timer";
-import QuizItem from "../QuizItem/QuizItem";
 
 const CurrentQuiz = () => {
    let navigate = useNavigate();
-   const { loading, request } = useHttp()
-   const [quiz, setQuiz] = useState<Quiz>({
-      title: '',
-      questions: [],
-      private: true,
-      timer: 0
-   });
+   const { request, loading } = useHttp()
+   const [quiz, setQuiz] = useState<Quiz>({});
+   const [dataMsg, setDataMsg] = useState()
 
    let params = useParams()
 
-   const getQuiz = useCallback(async () => {
+   const getQuiz = async () => {
       try {
          const data = await request(`/quiz/${params.id}`, 'GET')
+         console.log(data.quiz)
          setQuiz(data.quiz)
       } catch (e) { }
-   }, [request])
+   }
 
    const listquestions = quiz.questions
 
    useEffect(() => {
       getQuiz()
-   }, [])
+   }, [params.id])
 
    const [result, setResult] = useState<Result>({
       quizId: `${params.id}`,
@@ -62,20 +58,26 @@ const CurrentQuiz = () => {
 
    const handleResult = async () => {
       try {
-         console.log(result)
          const data = await request(`/quiz/${params.id}/result`, 'POST', { ...result })
-         console.log(data)
          navigate('/myquiz');
+         setDataMsg(data.message);
       } catch (e) {
       }
+   }
+
+   if(loading) {
+      return <CircularProgress />
    }
 
    return (
        <div className="Wrapper">
          <div className="quiz">
-            <FormControl>
-               <div className="quiz-heading"> {quiz.title} </div>
-               <h3> {quiz.description} </h3>
+
+            <FormControl sx={{maxWidth: '1000px'}}>
+               <div className="quiz-heading">
+                  <div className="quiz-heading-title"> {quiz.title} </div>
+                  <h3 > {quiz.description} </h3>
+               </div>
                {listquestions?.map(question =>
                   <CurrentQuestion question={question} key={question._id}
                      onSelectAnswer={handleAnswer}
@@ -91,8 +93,8 @@ const CurrentQuiz = () => {
                   </Button>
                </Box>
             </FormControl>
+            { setTime()>0? <Timer time={setTime()} answers={result}/>:<p>{quiz.timer}</p> }
          </div>
-          { setTime()>0? <Timer time={setTime()} answers={result}/>:<p>{quiz.timer}</p> }
       </div>
    )
 
