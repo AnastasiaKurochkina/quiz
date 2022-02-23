@@ -34,7 +34,7 @@ const SignUp = () => {
    const registerHandler = async () => {
       try {
          const data = await request('/user/registration', 'POST', { ...form })
-         if(data.message === 'Пользователь создан') {
+         if (data.message === 'Пользователь создан') {
             localStorage.setItem('messageSuccessSignUp', data.message);
          }
          navigate('/user/authorization?successfullyRegistered=true');
@@ -59,6 +59,14 @@ const SignUp = () => {
                onChange={changeHandler} />
             <TextField
                margin="dense"
+               label="Фамилия"
+               variant="outlined"
+               type="text"
+               name="fullname"
+               value={form.fullname}
+               onChange={changeHandler} />
+            <TextField
+               margin="dense"
                label="Логин"
                variant="outlined"
                type="login"
@@ -72,14 +80,6 @@ const SignUp = () => {
                type="password"
                name="password"
                value={form.password}
-               onChange={changeHandler} />
-            <TextField
-               margin="dense"
-               label="Полное имя"
-               variant="outlined"
-               type="text"
-               name="fullname"
-               value={form.fullname}
                onChange={changeHandler} />
             <Button
                variant="contained"

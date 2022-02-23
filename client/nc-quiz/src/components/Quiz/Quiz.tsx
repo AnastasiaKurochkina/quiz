@@ -1,5 +1,5 @@
 
-import { Box, Button, FormControl, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, FormControl } from "@mui/material";
 import React, { useCallback, useEffect, useState } from "react";
 import { useHttp } from "../../hooks/http-request";
 import Quiz from "../../models/quiz";
@@ -11,25 +11,25 @@ import Result from "../../models/result";
 import Auth from "../Auth/Auth";
 
 const CurrentQuiz = () => {
-   const { request } = useHttp()
+   const { request, loading } = useHttp()
    const [quiz, setQuiz] = useState<Quiz>({})
    const [dataMsg, setDataMsg] = useState()
 
    let params = useParams()
 
-   const getQuiz = useCallback(async () => {
+   const getQuiz = async () => {
       try {
          const data = await request(`/quiz/${params.id}`, 'GET')
          console.log(data.quiz)
          setQuiz(data.quiz)
       } catch (e) { }
-   }, [request])
+   }
 
    const listquestions = quiz.questions
 
    useEffect(() => {
       getQuiz()
-   }, [])
+   }, [params.id])
 
    const [result, setResult] = useState<Result>({
       quizId: `${params.id}`,
@@ -62,35 +62,33 @@ const CurrentQuiz = () => {
    if (quiz.private == true && localStorage.getItem('userId') == null) {
       return <Auth quiz={quiz._id} />
    }
+   
+    if(loading) {
+      return <CircularProgress />
+   } 
 
    return (
       <div className="quiz">
-         {(dataMsg === "Тест был уже пройден") ? (
-            <Typography variant="h4">
-               Вы уже проходили этот тест!
-            </Typography>
-         ) : 
-            <FormControl>
-               <div className="quiz-heading">
-                  <div className="quiz-heading-title"> {quiz.title} </div>
-                  <h3 > {quiz.description} </h3>
-               </div>
-               {listquestions?.map(question =>
-                  <CurrentQuestion question={question} key={question._id}
-                     onSelectAnswer={handleAnswer}
-                  />
-               )}
-               <Box textAlign='center'>
-                  <Button
-                     variant="contained"
-                     sx={{ mt: 3, bgcolor: '#1a237e', width: '350px', }}
-                     onClick={handleResult}
-                  >
-                     Отправить
-                  </Button>
-               </Box>
-            </FormControl>
-         }
+         <FormControl sx={{maxWidth: '1000px'}}>
+            <div className="quiz-heading">
+               <div className="quiz-heading-title"> {quiz.title} </div>
+               <h3 > {quiz.description} </h3>
+            </div>
+            {listquestions?.map(question =>
+               <CurrentQuestion question={question} key={question._id}
+                  onSelectAnswer={handleAnswer}
+               />
+            )}
+            <Box textAlign='center'>
+               <Button
+                  variant="contained"
+                  sx={{ mt: 3, bgcolor: '#1a237e', width: '350px', }}
+                  onClick={handleResult}
+               >
+                  Отправить
+               </Button>
+            </Box>
+         </FormControl>
       </div>
    )
 

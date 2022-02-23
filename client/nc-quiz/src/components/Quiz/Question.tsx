@@ -22,6 +22,7 @@ const CurrentQuestion: React.FC<{ question: Question, onSelectAnswer: any }> = (
                 >
                     {props.question.proposedAnswers.map(item =>
                         <FormControlLabel
+                            key={item}
                             value={item}
                             control={<Radio />}
                             label={item}
