@@ -61,17 +61,12 @@ const CurrentQuiz = () => {
          const data = await request(`/quiz/${params.id}/result`, 'POST', { ...result })
          navigate('/myquiz');
          setDataMsg(data.message);
-      } catch (e) {
-      }
+      } catch (e) { }
    }
 
-   if(loading) {
+   if (loading) {
       return <CircularProgress />
    }
-   
-    if(loading) {
-      return <CircularProgress />
-   } 
 
    return (
        <div className="Wrapper">
