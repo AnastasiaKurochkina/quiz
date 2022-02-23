@@ -1,16 +1,20 @@
-import {Alert, Checkbox, FormControlLabel, FormGroup, Snackbar} from "@mui/material";
+
+import {Alert, Checkbox, CircularProgress, FormControlLabel, FormGroup, Snackbar} from "@mui/material";
 import {Button, Card, CardActions, CardContent, Typography} from "@mui/material";
 import './QuizItem.css';
 import {Link} from "react-router-dom";
 import * as React from "react";
 import {useHttp} from "../../hooks/http-request";
 import {useState} from "react";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from '@mui/icons-material/Close';
 
 export default function QuizItem(props: any) {
 
     const {loading, request, error} = useHttp();
     const [updatePrivate, setUpdatePrivate] = useState<boolean>(false);
 
+    const [deleted, setDeleted] = useState<boolean>(false);
     const [checked, setChecked] = useState({
             privateQuiz: props.details.privateQuiz,
             open: props.details.open
@@ -44,11 +48,28 @@ export default function QuizItem(props: any) {
         } catch (e) {
         }
     }
+    const deleteQuiz = async ()=>{
+        console.log('delete')
+        try {
+            const data = await request(`/myquiz/delete/${props.details._id}`, 'DELETE');
+
+            if(data.message == 'Quiz удален') {
+                setDeleted(true)
+                setTimeout(() => {
+                    setDeleted(false);
+                }, 6000);
+            }
+        } catch (e) {
+        }
+    }
 
     return (
         <div className="QuizItem">
-            <Card sx={{ minWidth: 275 }}>
-                <CardContent>
+            <Card sx={{minWidth: 275}}>
+                <CardContent sx={{display: "flex", flexDirection:"column", justifyContent:"space-between"}}>
+                    <IconButton sx={{display: "flex", alignSelf:"flex-end"}} aria-label="delete" size="small" >
+                        <CloseIcon sx={{display: "flex", alignSelf:"flex-end"}} onClick={deleteQuiz}/>
+                    </IconButton>
                     <Typography variant="h5" component="div">
                         {props.details.title}
                     </Typography>
@@ -78,15 +99,23 @@ export default function QuizItem(props: any) {
                     </FormGroup>
                 </CardContent>
 
-                <CardActions>
-                    <Button component={Link} to={`edit/${props.details._id}`} variant="contained" href="myquiz/edit" size="medium">Редактировать</Button>
+                <CardActions sx={{display: "flex"}}>
+                        <Button component={Link} to={`edit/${props.details._id}`} variant="outlined" href="myquiz/edit" size="medium">Редактировать</Button>
+                        <Button component={Link} to={`/quiz/${props.details._id}`} variant="contained" href="" size="large">Пройти</Button>
                 </CardActions>
+
             </Card>
 
+            <Snackbar open={deleted} autoHideDuration={4000}>
+                <Alert severity="success" sx={{ width: '100%' }}>
+                    Quiz удален
+                </Alert>
+            </Snackbar>
             <Snackbar open={updatePrivate} autoHideDuration={4000}>
                 <Alert severity="success" sx={{ width: '100%' }}>
                     Quiz обновлен
                 </Alert>
+
             </Snackbar>
         </div>
     );
