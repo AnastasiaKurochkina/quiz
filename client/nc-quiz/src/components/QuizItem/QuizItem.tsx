@@ -1,4 +1,4 @@
-import {Alert, Checkbox, FormControlLabel, FormGroup, Snackbar} from "@mui/material";
+import {Alert, Box, Checkbox, FormControlLabel, FormGroup, Snackbar} from "@mui/material";
 import {Button, Card, CardActions, CardContent, Typography} from "@mui/material";
 import './QuizItem.css';
 import {Link} from "react-router-dom";
@@ -6,7 +6,7 @@ import * as React from "react";
 import {useHttp} from "../../hooks/http-request";
 import {useState} from "react";
 import IconButton from "@mui/material/IconButton";
-import DeleteIcon from '@mui/icons-material/Delete';
+import CloseIcon from '@mui/icons-material/Close';
 
 export default function QuizItem(props: any) {
 
@@ -54,8 +54,11 @@ export default function QuizItem(props: any) {
 
     return (
         <div className="QuizItem">
-            <Card sx={{ minWidth: 275}}>
-                <CardContent>
+            <Card sx={{minWidth: 275}}>
+                <CardContent sx={{display: "flex", flexDirection:"column", justifyContent:"space-between"}}>
+                    <IconButton sx={{display: "flex", alignSelf:"flex-end"}} aria-label="delete" size="small" >
+                        <CloseIcon sx={{display: "flex", alignSelf:"flex-end"}} onClick={deleteQuiz}/>
+                    </IconButton>
                     <Typography variant="h5" component="div">
                         {props.details.title}
                     </Typography>
@@ -75,12 +78,11 @@ export default function QuizItem(props: any) {
                     </FormGroup>
                 </CardContent>
 
-                <CardActions sx={{display: "flex", justifyContent: "space-between"}}>
-                    <Button component={Link} to={`edit/${props.details._id}`} variant="contained" href="myquiz/edit" size="medium">Редактировать</Button>
-                    <IconButton aria-label="delete" size="large" >
-                        <DeleteIcon onClick={deleteQuiz}/>
-                    </IconButton>
+                <CardActions sx={{display: "flex"}}>
+                        <Button component={Link} to={`edit/${props.details._id}`} variant="outlined" href="myquiz/edit" size="medium">Редактировать</Button>
+                        <Button component={Link} to={`/quiz/${props.details._id}`} variant="contained" href="" size="large">Пройти</Button>
                 </CardActions>
+
             </Card>
 
             <Snackbar open={deleted} autoHideDuration={4000}>
