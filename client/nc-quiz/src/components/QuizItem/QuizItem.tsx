@@ -1,4 +1,4 @@
-import {Checkbox, FormControlLabel, FormGroup} from "@mui/material";
+import {Alert, Checkbox, FormControlLabel, FormGroup, Snackbar} from "@mui/material";
 import {Button, Card, CardActions, CardContent, Typography} from "@mui/material";
 import './QuizItem.css';
 import {Link} from "react-router-dom";
@@ -9,6 +9,7 @@ import {useState} from "react";
 export default function QuizItem(props: any) {
 
     const {loading, request, error} = useHttp();
+    const [updatePrivate, setUpdatePrivate] = useState<boolean>(false);
 
     const [checked, setChecked] = useState({
             privateQuiz: props.details.privateQuiz,
@@ -30,7 +31,16 @@ export default function QuizItem(props: any) {
 
         try {
             const data = await request(`/myquiz/edit/${props.details._id}`, 'PUT', checkedPermission);
-            alert(data.message);
+
+            if(data.message == 'Quiz обновлен'){
+                setUpdatePrivate(true)
+                setTimeout(() => {
+                    setUpdatePrivate(false);
+                }, 6000);
+            }else {
+                setUpdatePrivate(false);
+            }
+
         } catch (e) {
         }
     }
@@ -45,12 +55,22 @@ export default function QuizItem(props: any) {
                     <Typography variant="body2" hidden={props.details.description === ''}>
                         {props.details.description}
                     </Typography>
-
                     <FormGroup>
-                        <FormControlLabel control={<Checkbox />} label={props.details.open ? 'Открыт' : 'Закрыт'} />
-                        <FormControlLabel control={<Checkbox />} label={props.details.privateQuiz ? 'Приватный' : 'Общий'} />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={checked.privateQuiz}
+                                    onChange={()=> setChecked({
+                                        privateQuiz: !checked.privateQuiz,
+                                        open: checked.open
+                                    })
+                                    }
+                                />
+                            }
+                            label= {'Приватный'}
+                        />
                         <CardActions>
-                            <Button size="small">Сохранить</Button>
+                            <Button size="small" onClick={savePermission} >Сохранить</Button>
                             <Button size="small"  >
                                 <Link className='quiz-cars__link' to={`/results/${props.details._id}`}> Результаты </Link>
                             </Button>
@@ -62,6 +82,12 @@ export default function QuizItem(props: any) {
                     <Button component={Link} to={`edit/${props.details._id}`} variant="contained" href="myquiz/edit" size="medium">Редактировать</Button>
                 </CardActions>
             </Card>
+
+            <Snackbar open={updatePrivate} autoHideDuration={4000}>
+                <Alert severity="success" sx={{ width: '100%' }}>
+                    Quiz обновлен
+                </Alert>
+            </Snackbar>
         </div>
     );
 }

@@ -8,6 +8,7 @@ import Quiz from './components/Quiz/Quiz';
 import AddQuiz from './components/AddQuiz/AddQuiz';
 import ListQuiz from './components/ListQuiz/ListQuiz';
 import Results from './components/Results/Results';
+import EditQuiz from "./components/EditQuiz/EditQuiz";
 
 function App() {
   //todo: добавлять роутинг при создании компонентов
@@ -16,6 +17,7 @@ function App() {
        <HeaderMenu />
       <Routes>
         <Route path="myquiz" element={<ListQuiz />} />
+        <Route path="myquiz/edit/:id" element={<EditQuiz />} />
         <Route path="results/:id" element={<Results />} />
         <Route path="quiz">
           <Route path="create" element={<AddQuiz />} />
