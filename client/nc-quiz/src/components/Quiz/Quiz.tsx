@@ -1,16 +1,17 @@
 
 import { Box, Button, CircularProgress, FormControl } from "@mui/material";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHttp } from "../../hooks/http-request";
 import Quiz from "../../models/quiz";
 import CurrentQuestion from "./Question";
-import { useParams } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import './Quiz.css';
 import Answer from "../../models/answer";
 import Result from "../../models/result";
-import Auth from "../Auth/Auth";
+import Timer from "../Timer/Timer";
 
 const CurrentQuiz = () => {
+   let navigate = useNavigate();
    const { request, loading } = useHttp()
    const [quiz, setQuiz] = useState<Quiz>({})
    const [dataMsg, setDataMsg] = useState()
@@ -51,14 +52,23 @@ const CurrentQuiz = () => {
       )
    }
 
+   const setTime = () => {
+      return Number(quiz.timer)
+   }
+
    const handleResult = async () => {
       try {
          const data = await request(`/quiz/${params.id}/result`, 'POST', { ...result })
+         navigate('/myquiz');
          setDataMsg(data.message);
       } catch (e) { }
    }
 
-   if (loading) {
+   if(loading) {
+      return <CircularProgress />
+   }
+   
+    if(loading) {
       return <CircularProgress />
    }
 
