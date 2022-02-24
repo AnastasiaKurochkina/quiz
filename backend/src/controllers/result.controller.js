@@ -33,8 +33,8 @@ export default class ResultController {
             }
 
             for (let i in answers) {
-                let answer = answers[i].answer.trim().toLowerCase().split(" ");
-                let correctAnswer = quiz.questions[i].correctAnswer.trim().toLowerCase().split(" ");
+                let answer = answers[i].answer.trim().toLowerCase();
+                let correctAnswer = quiz.questions[i].correctAnswer.trim().toLowerCase();
                 
                 answers[i].answer = answer[i] === correctAnswer[i];
             }
