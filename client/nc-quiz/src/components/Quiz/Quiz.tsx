@@ -57,6 +57,11 @@ const CurrentQuiz = () => {
    }
 
    const handleResult = async () => {
+      localStorage.removeItem("currentProgress");
+      localStorage.removeItem("hours");
+      localStorage.removeItem("minutes");
+      localStorage.removeItem("seconds");
+      localStorage.removeItem("end");
       try {
          const data = await request(`/quiz/${params.id}/result`, 'POST', { ...result })
          navigate('/myquiz');
@@ -93,7 +98,7 @@ const CurrentQuiz = () => {
                </Box>
             </FormControl>
          </div>
-          { setTime()>0? <Timer time={setTime()} answers={result}/>:<p>Не ограничное время</p> }
+          { setTime()>0? <Timer time={setTime()} answers={result}/>:<p>Не ограниченное время</p> }
       </div>
    )
 
