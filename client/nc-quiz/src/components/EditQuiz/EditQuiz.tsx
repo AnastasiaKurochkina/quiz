@@ -2,16 +2,19 @@ import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/theme-github";
 import Button from "@mui/material/Button";
-import {useCallback, useEffect, useState} from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useHttp } from "../../hooks/http-request";
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Quiz from "../../models/quiz";
+import { Alert, Snackbar } from "@mui/material";
 
-export default function EditQuiz(){
+export default function EditQuiz() {
 
-    const {loading, request} = useHttp();
+    const { loading, request } = useHttp();
 
     const [initial, setInitial] = useState('');
+
+    const [openSnackBar, setOpenSnackBar] = useState<boolean>(false);
 
     const userId = localStorage.getItem('userId');
 
@@ -19,7 +22,11 @@ export default function EditQuiz(){
         setInitial(newQuiz);
     }
 
-    const createQuiz = async() => {
+    const handleCloseSnackBar = () => {
+        setOpenSnackBar(false);
+    }
+
+    const createQuiz = async () => {
         let parseQuiz = {
             ...JSON.parse(initial),
             userId
@@ -27,7 +34,7 @@ export default function EditQuiz(){
 
         try {
             const data = await request(`/myquiz/edit/${params.id}`, 'PUT', parseQuiz);
-            alert(data.message);
+            setOpenSnackBar(true)
         } catch (e) {
         }
     }
@@ -72,6 +79,18 @@ export default function EditQuiz(){
                     Сохранить изменения
                 </Button>
             </div>
+            <Snackbar
+                open={openSnackBar}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackBar}
+            >
+                <Alert
+                    onClose={handleCloseSnackBar}
+                    severity="success"
+                >
+                    Изменения успешно сохранены
+                </Alert>
+            </Snackbar>
         </div>
     );
 }
